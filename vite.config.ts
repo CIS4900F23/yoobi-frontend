@@ -2,7 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
 
 const postsProxyTarget = `http://posts:8080`;
-const yoobiProxyTarget = `http://yoobi:3001`;
+const yoobiProxyTarget = `http://yoobi-bot:3001`;
 
 const config: UserConfig = {
 	plugins: [sveltekit()],
