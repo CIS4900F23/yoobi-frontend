@@ -1,8 +1,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
 
-// const { BACKEND_PORT, BACKEND_HOST, YOOBI_PORT, YOOBI_HOST } = process.env;
-const backendProxyTarget = `http://backend:8080`;
+const postsProxyTarget = `http://posts:8080`;
 const yoobiProxyTarget = `http://yoobi:3001`;
 
 const config: UserConfig = {
@@ -16,7 +15,7 @@ const config: UserConfig = {
 	server: {
 		proxy: {
 			'/api': {
-				target: backendProxyTarget,
+				target: postsProxyTarget,
 				changeOrigin: true
 			},
 			'/ask': {
