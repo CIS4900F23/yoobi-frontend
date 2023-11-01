@@ -1,4 +1,4 @@
-name: main-actions
+name: build-and-push
 run-name: ${{ github.repository }}  main actions
 on: 
     push:
@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: loganhagen/yoobi:latest
+          tags: loganhagen/yoobi-frontend:latest
