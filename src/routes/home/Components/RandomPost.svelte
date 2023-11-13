@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Size from '../../../Components/size.svelte';
-	import ShowPost from '../../../Components/show_post.svelte';
-	import ShowPlot from '../../../Components/show_plot.svelte';
-	import type { Comment, Plot, Post } from '../../../types';
-	import type { Writable } from 'svelte/store';
-	import { onMount } from 'svelte';
+	import Size from "../../../Components/size.svelte";
+	import ShowPost from "../../../Components/show_post.svelte";
+	import ShowPlot from "../../../Components/show_plot.svelte";
+	import type { Comment, Plot, Post } from "../../../types";
+	import type { Writable } from "svelte/store";
+	import { onMount } from "svelte";
 
 	export let post_store: Writable<Post>;
 	export let plot_store: Writable<Plot>;
@@ -28,25 +28,30 @@
 		getRandomPost();
 	});
 
-	// Loads a random tweet into page memory to be accesed under the variable cur_tweet
+	// Loads a random tweet into page memory to be accessed under the variable cur_tweet
 	async function getRandomPost() {
-		const response = await fetch('/api/posts/random');
-		const responseJSON = await response.json();
+		try {
+			const response = await fetch("/api/posts/random");
+			if (!response.ok) {
+				throw new Error(`${response.status} ${response.statusText}`);
+			}
 
-		//List of comments
-		let comments = getComments(responseJSON['comments']);
-
-		//update our current post
-		let post = {
-			text: responseJSON['text'],
-			id: responseJSON['id'],
-			date: responseJSON['date'],
-			comments: comments,
-			type: responseJSON['type']
-		};
-
-		//Set data in sharedPost store so that the data can be shared between components and pages
-		post_store.set(post);
+			const responseJSON = await response.json();
+			// List of comments
+			let comments = getComments(responseJSON["comments"]);
+			// Update our current post
+			let post = {
+				text: responseJSON["text"],
+				id: responseJSON["id"],
+				date: responseJSON["date"],
+				comments: comments,
+				type: responseJSON["type"],
+			};
+			//Set data in sharedPost store so that the data can be shared between components and pages
+			post_store.set(post);
+		} catch (error) {
+			return;
+		}
 	}
 
 	//gets comments for the posts and returns list of comments if any exist
@@ -59,10 +64,10 @@
 		//add every comment to the list of comments
 		for (var comment of response) {
 			comments.push({
-				text: comment['content'],
-				id: comment['_id'],
-				post_id: comment['post_id'],
-				date: comment['created_at']
+				text: comment["content"],
+				id: comment["_id"],
+				post_id: comment["post_id"],
+				date: comment["created_at"],
 			});
 		}
 		return comments;
@@ -71,13 +76,18 @@
 	//Set tweet plot data in store to the JSON data returned by the backend
 	async function getTweetSentimentPlot() {
 		//Don't create a plot if there is no post loaded into memory
-		if (cur_post.text == 'N/A') return false;
+		if (cur_post.text == "N/A") return false;
 
-		const response = await fetch('/api/plot/sentiment/tweets/' + cur_post.id);
+		const response = await fetch(
+			"/api/plot/sentiment/tweets/" + cur_post.id
+		);
 		const responseJSON = await response.json();
 
 		//update our current plot
-		let plot = { data: responseJSON["data"], layout: responseJSON["layout"] }
+		let plot = {
+			data: responseJSON["data"],
+			layout: responseJSON["layout"],
+		};
 
 		//Set data in sharedPlot store so that the data can be shared between components and pages
 		plot_store.set(plot);
@@ -86,12 +96,17 @@
 	//Set tweet plot data in store to the JSON data returned by the backend
 	async function getRedditSentimentPlot() {
 		//Don't create a plot if there is no post loaded into memory
-		if (cur_post.text == 'N/A') return false;
+		if (cur_post.text == "N/A") return false;
 
-		const response = await fetch('/api/plot/sentiment/reddit/' + cur_post.id);
+		const response = await fetch(
+			"/api/plot/sentiment/reddit/" + cur_post.id
+		);
 		const responseJSON = await response.json();
 
-		let plot = { data: responseJSON["data"], layout: responseJSON["layout"] }
+		let plot = {
+			data: responseJSON["data"],
+			layout: responseJSON["layout"],
+		};
 
 		//Set data in sharedPlot store so that the data can be shared between components and pages
 		plot_store.set(plot);
@@ -102,9 +117,9 @@
 		//Update Post Text
 		await getRandomPost();
 
-		if (cur_post.type == 'tweet') {
+		if (cur_post.type == "tweet") {
 			await getTweetSentimentPlot();
-		} else if (cur_post.type == 'reddit') {
+		} else if (cur_post.type == "reddit") {
 			await getRedditSentimentPlot();
 		} else {
 			return false;
@@ -113,7 +128,9 @@
 </script>
 
 <main>
-	<h1 class="px-2 py-4 text-4xl text-slate-500">Random Universal Basic Income Post</h1>
+	<h1 class="px-2 py-4 text-4xl text-slate-500">
+		Random Universal Basic Income Post
+	</h1>
 
 	<!-- Page Content Goes In Here -->
 	<div class="space-y-2">

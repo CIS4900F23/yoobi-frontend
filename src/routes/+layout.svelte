@@ -1,5 +1,5 @@
 <script>
-	import '../app.css';
+	import "../app.css";
 </script>
 
 <nav class="bg-black border-gray-200 px-4 sm:px-4 py-2.5 dark:bg-gray-900">
@@ -42,18 +42,6 @@
 						About
 					</a>
 				</li>
-				<!-- <li class="relative pr-8">
-					<button
-						class="block px-4 py-2 pl-3 pr-8 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-					>
-						Accessibility
-					</button>
-					<ul class="absolute z-10 hidden bg-white shadow-lg rounded-md">
-						<li><button class="text-left">Contrast</button></li>
-						<li><button class="text-left">Keyboard</button></li>
-						<li><button class="text-left">Screen Readers</button></li>
-					</ul>
-				</li> -->
 			</ul>
 		</div>
 	</div>

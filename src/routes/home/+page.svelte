@@ -1,11 +1,7 @@
-<svelte:head>
-    <title>Data Visualizations</title> 
-</svelte:head>
-
 <script context="module" lang="ts">
-	import Switch from '../../Components/switch.svelte';
-	import Tabs from './Components/tabs.svelte';
-	import { sharedTab } from './store';
+	import Switch from "../../Components/switch.svelte";
+	import Tabs from "./Components/tabs.svelte";
+	import { sharedTab } from "./store";
 
 	//The value of switched represents which tab we are on, but techincally in this case we only care about when it is updated, not its value
 	let switched: boolean;
@@ -16,9 +12,13 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Data Visualizations</title>
+</svelte:head>
+
 <main>
 	<!-- Switch Component that allows us to switch between two tabs defined in tabs.svelte -->
-	<Switch store={sharedTab} options={['Random Post', 'All Posts']} />
+	<Switch store={sharedTab} options={["Random Post", "All Posts"]} />
 
 	<!-- Refresh current tab when a change is detected on the above switch -->
 	{#key switched}

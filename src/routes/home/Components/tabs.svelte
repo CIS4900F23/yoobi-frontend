@@ -1,7 +1,7 @@
 <script lang="ts">
-	import RandomPost from './RandomPost.svelte';
-	import DataSentiment from './DataSentiment.svelte';
-	import { sharedPost, sharedPlot, sharedTab } from '../store';
+	import RandomPost from "./RandomPost.svelte";
+	import DataSentiment from "./DataSentiment.svelte";
+	import { sharedPost, sharedPlot, sharedTab } from "../store";
 
 	//represents the current state of the switch tab
 	let switched: boolean;
