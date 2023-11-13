@@ -11,16 +11,25 @@
 	});
 
 	onMount(async () => {
-		const response = await fetch("/api/plot/sentiment/all");
-		const responseJSON = await response.json();
+		try {
+			const response = await fetch("/api/plot/sentiment/all");
 
-		//update our current plot
-		let plot_obj = {
-			data: responseJSON["data"],
-			layout: responseJSON["layout"],
-		};
+			if (!response.ok) {
+				throw new Error(`${response.status} ${response.statusText}`);
+			}
 
-		sharedDB.set(plot_obj);
+			const responseJSON = await response.json();
+
+			//update our current plot
+			let plot_obj = {
+				data: responseJSON["data"],
+				layout: responseJSON["layout"],
+			};
+
+			sharedDB.set(plot_obj);
+		} catch (error) {
+			return;
+		}
 	});
 </script>
 

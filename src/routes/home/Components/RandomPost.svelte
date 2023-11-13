@@ -37,8 +37,10 @@
 			}
 
 			const responseJSON = await response.json();
+
 			// List of comments
 			let comments = getComments(responseJSON["comments"]);
+
 			// Update our current post
 			let post = {
 				text: responseJSON["text"],
@@ -47,6 +49,7 @@
 				comments: comments,
 				type: responseJSON["type"],
 			};
+
 			//Set data in sharedPost store so that the data can be shared between components and pages
 			post_store.set(post);
 		} catch (error) {

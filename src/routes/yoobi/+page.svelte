@@ -1,51 +1,60 @@
-<svelte:head>
-    <title>Q&A</title> 
-</svelte:head>
-
 <script lang="ts">
-	import type { Interaction } from '../../types';
+	import type { Interaction } from "../../types";
 
 	// Array to hold all interactions between the user and AI.
 	let interactions: Interaction[] = [];
 
 	async function askQuestion(question: string) {
-		let url = '/ask/?';
+		let url = "/ask/?";
 		let params = new URLSearchParams({ question: question });
 
-		const response = await fetch(url + params, {
-			method: "GET", 
-			mode: "cors", 
-			cache: "no-cache", 
-			credentials: "same-origin", 
-			headers: {
-			"Content-Type": "application/json",
-			},
-			redirect: "follow", 
-			referrerPolicy: "no-referrer", 
-		});
+		try {
+			const response = await fetch(url + params, {
+				method: "GET",
+				mode: "cors",
+				cache: "no-cache",
+				credentials: "same-origin",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				redirect: "follow",
+				referrerPolicy: "no-referrer",
+			});
 
-		const json = await response.json();
+			if (!response.ok) {
+				throw new Error(`${response.status} ${response.statusText}`);
+			}
 
-		if (response.ok) {
-			let answer: string = json['content'];
+			const json = await response.json();
+			let answer: string = json["content"];
 			interactions.push({ question, answer });
 			interactions = interactions;
+		} catch (error) {
+			return;
 		}
 	}
 
 	async function handleClick() {
-		(<HTMLInputElement>document.getElementById('response')).innerHTML = "Generating...";
-		let question: string = (<HTMLInputElement>document.getElementById('textarea1')).value;
+		(<HTMLInputElement>document.getElementById("response")).innerHTML =
+			"Generating...";
+		let question: string = (<HTMLInputElement>(
+			document.getElementById("textarea1")
+		)).value;
 		await askQuestion(question);
-		(<HTMLInputElement>document.getElementById('response')).innerHTML = "";
+		(<HTMLInputElement>document.getElementById("response")).innerHTML = "";
 	}
 </script>
 
+<svelte:head>
+	<title>Q&A</title>
+</svelte:head>
+
 <main>
 	<h1 style="font-size:150%;">Yoobi</h1>
-	<p>Yoobi is an artificial intelligencce helper trained to answer<p>
+	<p>Yoobi is an artificial intelligence helper trained to answer</p>
+	<p />
 	<p>whatever questions you may have about universal basic income. Say hi!</p>
-	<br>
+	<br />
 	<hr />
 	<div class="textarea1">
 		<!-- <input placeholder="Your question here..." size="32" id="textinput1"/> -->
@@ -61,10 +70,12 @@
 		<p>Generating...</p>
 	{/await} -->
 	<button
-		class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg transform active:scale-75 transition-transform" on:click={handleClick}>
+		class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg transform active:scale-75 transition-transform"
+		on:click={handleClick}
+	>
 		Ask!
 	</button>
-	<p id="response"></p>
+	<p id="response" />
 
 	<!-- Prints the array of interactions as it is updated. Since the array is empty on page load, nothing is printed.
 	I would like some kind of loading action to appear on button click.  -->
